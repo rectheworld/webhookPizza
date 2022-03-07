@@ -42,14 +42,20 @@ async function orderPizza (data) {
 }
 
 function isNyCity (data) {
-  if (data.visitor.country === 'United States' &
-  data.visitor.region === 'NY' &
-  data.visitor.city === 'New York'
-  ) {
-    return (true)
+  try {
+    if ((data.visitor.country === 'United States' | data.visitor.country === 'United State') &
+    data.visitor.region === 'NY' &
+    data.visitor.city === 'New York'
+    ) {
+      return (true)
+    }
+
+    return false
+  } catch (e) {
+    console.log('unable to verify if cutomer is in NYC')
+    return false
   }
 
-  return false
 }
 
 function validateData (data) {
@@ -59,6 +65,7 @@ function validateData (data) {
 
 
 function detectPizzaString (convoArr) {
+  try {
   let containsPizza = false;
   convoArr
   // filter to only the words the guest speaks
@@ -72,6 +79,10 @@ function detectPizzaString (convoArr) {
   containsPizza = convoArr.some((x) => {return x.search('pizza') > -1})
 
   return (containsPizza)
+  } catch (e) {
+    console.log("Error, unable to parce chat")
+    return (false)
+  }
 
 }
 
