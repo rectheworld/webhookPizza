@@ -85,7 +85,6 @@ async function placeOrder (orderData) {
    'topping': 'cheese'
    });
 
-
   const config = {
     method: 'post',
     url: 'https://young-robust-angolatitan.glitch.me/olark',
