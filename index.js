@@ -1,13 +1,15 @@
 const express = require('express');
-var cors = require('cors')
+const bodyParser = require('body-parser');
+const cors = require('cors')
 const pizzaPromo = require('./src/pizzaPromo')
 const app = express();
 
 app.use(cors())
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const port = 80;
+const port = 5000;
 app.listen(
     port,
     () => console.log(`Server Running On Port ${port}...`)
@@ -19,6 +21,6 @@ app.get("/", (req,res) =>{
 
 app.post("/pizza", async (req,res) =>{
   /// Clean me Ren
-  const pizzaStatus = await pizzaPromo.orderPizza(req.body)
+  const pizzaStatus = await pizzaPromo.orderPizza(JSON.parse(req.body.data))
   return res.json(pizzaStatus);
 });

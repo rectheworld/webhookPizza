@@ -5,25 +5,25 @@ var qs = require('qs');
 async function orderPizza (data) {
   // Init the state of the Pizza
   let pizzaStatus  = {status: 'no pizza'}
-  // Confirm that the
+  // Confirm that the data is formated correctly
   const cleanData = validateData(data);
 
   // Check if the location is in NYC
-  if (!isNyCity(data)) {
+  if (!isNyCity(cleanData)) {
     /// TODO Inprove response here
     return (pizzaStatus)
   }
 
   // Determine if the visitor spoke "pizza"
-  if (!detectPizzaString(data.items)) {
+  if (!detectPizzaString(cleanData.items)) {
     return (pizzaStatus)
   }
 
   // Order the Pizza
   // Collect the data nessasary to triangleate the location
   const orderData = {
-    emailAddress: data.visitor.emailAddress,
-    phoneNumber: data.visitor.phoneNumber }
+    emailAddress: cleanData.visitor.emailAddress,
+    phoneNumber: cleanData.visitor.phoneNumber }
 
 
   let orderStatus = await placeOrder(orderData);
@@ -52,7 +52,7 @@ function isNyCity (data) {
 
     return false
   } catch (e) {
-    console.log('unable to verify if cutomer is in NYC')
+    console.log(`Error: unable to verify if cutomer is in NYC. Error ${e}`)
     return false
   }
 
