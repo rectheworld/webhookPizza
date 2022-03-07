@@ -43,7 +43,7 @@ async function orderPizza (data) {
 
 function isNyCity (data) {
   try {
-    if ((data.visitor.country === 'United States' | data.visitor.country === 'United State') &
+    if ((data.visitor.country === 'United States' || data.visitor.country === 'United State') &
     data.visitor.region === 'NY' &
     data.visitor.city === 'New York'
     ) {
