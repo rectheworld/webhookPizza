@@ -1,12 +1,22 @@
 var axios = require('axios');
 var qs = require('qs');
 
-
+/**
+ * Drives the pizza decisioning and ordering process.
+ *
+ * @param data - Object from urlencoded request
+ * @returns Object {status: <pizza status>}
+ * Pizza stata could be "no pizza", "pizza"
+ */
 async function orderPizza (data) {
   // Init the state of the Pizza
   let pizzaStatus  = {status: 'no pizza'}
+
   // Confirm that the data is formated correctly
   const cleanData = validateData(data);
+
+  // Confirm this is a unique request
+  idChecker (data)
 
   // Check if the location is in NYC
   if (!isNyCity(cleanData)) {
@@ -25,7 +35,6 @@ async function orderPizza (data) {
     emailAddress: cleanData.visitor.emailAddress,
     phoneNumber: cleanData.visitor.phoneNumber }
 
-
   let orderStatus = await placeOrder(orderData);
 
   /// Dont love the magicstring but not sure what errors might look like
@@ -39,8 +48,13 @@ async function orderPizza (data) {
     return (pizzaStatus)
   }
 
-}
+} // End of orderPizza
 
+/**
+ * Determines if guest is in NYC, USA
+ * @param data - Object from urlencoded request
+ * @returns Booleon
+ */
 function isNyCity (data) {
   try {
     if ((data.visitor.country === 'United States' || data.visitor.country === 'United State') &
@@ -56,37 +70,54 @@ function isNyCity (data) {
     return false
   }
 
-}
+} // End of isNyCity
 
+/**
+ * Stand in Method for a json validator for security.
+ * @param data - Object from urlencoded request
+ * @returns data
+ */
 function validateData (data) {
   // TODO Add a json validater
   return (data)
 }
 
+/**
+ * Stand in Method a check to make sure the service is not
+ * being spammed. Intends to use the visitor ID or IP.
+ * @param data - Object from urlencoded request
+ * @returns data
+ */
+ function idChecker (data) {
+  return (data)
+}
 
 function detectPizzaString (convoArr) {
   try {
-  let containsPizza = false;
-  convoArr
-  // filter to only the words the guest speaks
-  convoArr = convoArr.filter((x) => {return x.kind === "MessageToOperator"});
+    let containsPizza = false;
 
-  // covert all vistitor text to lowercase
-  convoArr = convoArr.map((x) => {return x.body.toLowerCase()});
+    // filter to only the words the guest speaks
+    convoArr = convoArr.filter((x) => {return x.kind === "MessageToOperator"});
 
-  convoArr
+    // covert all vistitor text to lowercase
+    convoArr = convoArr.map((x) => {return x.body.toLowerCase()});
 
-  containsPizza = convoArr.some((x) => {return x.search('pizza') > -1})
+    // Returns true if the word pizza is spoken
+    containsPizza = convoArr.some((x) => {return x.search('pizza') > -1})
 
-  return (containsPizza)
+    return (containsPizza)
   } catch (e) {
     console.log("Error, unable to parce chat")
     return (false)
   }
 
-}
+} // End detectPizzaString
 
-
+/**
+ * @param orderData  {emailAddress: STRING,
+    phoneNumber: STRING}
+ * @returns
+ */
 async function placeOrder (orderData) {
 
   const fourmData = qs.stringify({
@@ -107,14 +138,12 @@ async function placeOrder (orderData) {
 
   return await axios(config)
   .then(function (response) {
-
     return(response.data)
   })
   .catch(function (error) {
     return(error)
   });
-}
-
+} // End placeOrder
 
 const pizzaPromo = {
   orderPizza: orderPizza
