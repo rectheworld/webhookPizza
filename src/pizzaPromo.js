@@ -103,7 +103,7 @@ function detectPizzaString (convoArr) {
     convoArr = convoArr.map((x) => {return x.body.toLowerCase()});
 
     // Returns true if the word pizza is spoken
-    containsPizza = convoArr.some((x) => {return x.search(' pizza ') > -1})
+    containsPizza = convoArr.some((x) => {return x.search('pizza') > -1})
 
     return (containsPizza)
   } catch (e) {
