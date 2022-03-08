@@ -27,7 +27,7 @@ Hello Pizza!!!
 
 ### Hosts
 Local Host: http://localhost:5000
-Live Host: http://3.92.158.174:5000
+Live Host: Host: https://pizza.rectheinternet.com/
 
 ### Heartbeat request
 Used to test the server is running
@@ -140,5 +140,4 @@ Error Response:
 "id": "EV695BI2930A6XMO32886MPT899443414"
 }
 ```
-
 
